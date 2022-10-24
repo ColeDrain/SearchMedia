@@ -1,6 +1,15 @@
 import ffmpeg
 import numpy as np
+import streamlit as st
+import whisper
 
+
+@st.experimental_singleton
+def load_model():
+    return whisper.load_model("tiny.en.pt")
+
+
+@st.experimental_memo
 def load_audio(file: (str, bytes), sr: int = 16000):
     """
     Open an audio file and read as mono waveform, resampling as necessary
@@ -38,6 +47,7 @@ def load_audio(file: (str, bytes), sr: int = 16000):
     return np.frombuffer(out, np.int16).flatten().astype(np.float32) / 32768.0
 
 
+@st.experimental_memo
 def searcher(trans_dict, query):
 
     results = []
@@ -53,3 +63,19 @@ def searcher(trans_dict, query):
             results.append(f'{start_m:02d}:{start_s:02d} - {end_m:02d}:{end_s:02d}')
 
     return results
+
+
+@st.experimental_memo
+def transcribe(_model, audio_array):
+    return _model.transcribe(audio_array, language='english')
+
+
+def col_displayer(list, wcol=6):
+    ncol = len(list)
+    cols = st.columns(ncol)
+
+    for i in range(ncol):
+        col = cols[i%wcol]
+        col.write(f"{list[i]}")
+
+    return cols
