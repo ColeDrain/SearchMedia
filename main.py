@@ -65,7 +65,7 @@ if upload_type == 'YouTube Vid':
                 if search_result:
                     st.write(f"we found '{query}' at the following position(s):")
 
-                    st.write(" ".join(search_result))
+                    st.write(", ".join(search_result))
                 else:
                     st.write(f"we couldn't find '{query}' ")
 
@@ -98,7 +98,7 @@ else:
                 if search_result:
                     st.write(f"we found '{query}' at the following position(s):")
 
-                    st.write(" ".join(search_result))
+                    st.write(", ".join(search_result))
                 else:
                     st.write(f"we couldn't find {query}")
 
